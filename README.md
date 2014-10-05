@@ -26,6 +26,24 @@ gulp.task "example/test", ->
 $ gulp example/test
 ```
 
+```text
+[21:00:00] Requiring external module coffee-script/register
+[21:00:01] Using gulpfile ~/workspace/phantomochajs/gulpfile.coffee
+[21:00:01] Starting 'example'...
+[21:00:02] Finished 'example' after 573 ms
+
+
+  this is coffeescript
+    ✓ hello 
+
+  this is javascript
+    ✓ hello 
+
+
+  2 passing (5ms)
+
+```
+
 ## Contributing
 
 1. Fork it
