@@ -14,3 +14,4 @@ deploy:
   on:
     tags: true
     repo: sh19910711/phantomochajs
+    all_branches: true
