@@ -24,7 +24,7 @@ phantomochajs = require "phantomochajs"
 
 gulp.task "example/test", ->
   # specify test scripts in src
-  gulp.src ["spec/spec_helper.coffee", "spec/**/*_spec.coffee"]
+  gulp.src ["spec/spec_helper.coffee", "spec/**/*_spec.coffee", "spec/**/*_spec.js"]
     .pipe phantomochajs(
       host: "127.0.0.1"
       port: "28080"
