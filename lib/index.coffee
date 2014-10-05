@@ -61,12 +61,10 @@ phantomochajs = (options)->
   app = connect()
 
   app.use connect_assets(
-    paths: [
-      "./"
-    ]
+    paths: ["./"]
     servePath: ""
     build: false
-    preCompile: false
+    precompile: "*.coffee"
     buildDir: "tmp/assets"
   )
 
@@ -97,6 +95,7 @@ phantomochajs = (options)->
     cb()
 
   stream.on "end", ->
+
     unless options.server
       run_phantomjs(options)
         .on "exit", ->
