@@ -1,7 +1,7 @@
 through = require "through2"
 http    = require "http"
 connect = require "connect"
-connect_assets = require "connect-assets"
+connect_mincer = require "connect-mincer"
 path    = require "path"
 jade    = require "jade"
 fs      = require "fs"
@@ -60,14 +60,6 @@ phantomochajs = (options)->
 
   app = connect()
 
-  app.use connect_assets(
-    paths: ["./"]
-    servePath: ""
-    build: false
-    precompile: "*.coffee"
-    buildDir: "tmp/assets"
-  )
-
   # GET /test_runner.html
   app.use (req, res, next)->
     if req.url == "/test_runner.html"
@@ -79,10 +71,19 @@ phantomochajs = (options)->
           scripts: scripts
           dependencies: options.dependencies
           test_dependencies: options.test_dependencies
+          js: (path)-> "<script src=\"#{path}.js\"></script>"
         )
       )
     else
       next()
+
+  mincer_engine = new connect_mincer(
+    root: process.cwd()
+    paths: ["./"]
+    mount_point: "/"
+    production: false
+  )
+  app.use mincer_engine.createServer()
 
   # create http server
   webserver = http.createServer(app).listen(parseInt(options.port, 10), options.host)
@@ -95,7 +96,6 @@ phantomochajs = (options)->
     cb()
 
   stream.on "end", ->
-
     unless options.server
       run_phantomjs(options)
         .on "exit", ->
