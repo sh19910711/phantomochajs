@@ -1,5 +1,7 @@
 # phantomochajs
 
+[![Build Status](https://travis-ci.org/sh19910711/phantomochajs.svg?branch=master)](https://travis-ci.org/sh19910711/phantomochajs)
+
 Auto generate `test_runner.html` for client-side tests (mocha + phantomjs)
 
 ## Installation
