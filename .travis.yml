@@ -1,8 +1,16 @@
 language: node_js
 node_js:
-  - "0.10"
-  - "0.11"
+- '0.10'
+- '0.11'
 before_script:
-  - npm install -g gulp
+- npm install -g gulp
 script:
-  - gulp
+- gulp
+deploy:
+  provider: npm
+  email: sh19910711@gmail.com
+  api_key:
+    secure: FyO+oDXIYu5KNQDXkKiOXt4+crRwELWlMopbJMM8qxOo9H19cm2VeSwfElKXTx1Z2nwt9nXlkDTCzyuAwbafHQF3QM+GjVOy6MGzhAxlZyN7DpDQujSEDyo3+lTg3+JDjL2t8RQA6uXC794XqoZlj4XlKXAFf3zgwiUBE89Q2WA=
+  on:
+    tags: true
+    repo: sh19910711/phantomochajs
