@@ -92,7 +92,7 @@ phantomochajs = (options)->
   # set up for test scripts
   stream = through.obj (file, enc, cb)->
     # add given test script
-    relative_path = path.relative path.join(__dirname, ".."), file.path
+    relative_path = path.relative process.cwd(), file.path
     scripts.push relative_path.slice(0, -1 * path.extname(file.path).length)
     cb()
 
