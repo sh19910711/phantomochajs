@@ -10,6 +10,8 @@ $ npm install --save-dev phantomochajs
 
 ## Usage (with gulp)
 
+### gulpfile.coffee
+
 ```coffeescript
 gulp = require "gulp"
 phantomochajs = require "phantomochajs"
@@ -22,9 +24,13 @@ gulp.task "example/test", ->
     )
 ```
 
+### Run gulp
+
 ```sh
 $ gulp example/test
 ```
+
+### Result
 
 ```text
 [21:00:00] Requiring external module coffee-script/register
@@ -43,6 +49,17 @@ $ gulp example/test
   2 passing (5ms)
 
 ```
+
+## Options
+
+Key | Type | Default | Description |
+--- | --- | --- | --- |
+`host` | `String` | `127.0.0.1` | hostname of the webserver
+`port` | `Number` | `28080` | port of the webserver
+`server` | `Boolean` | `false` | keep the webserver
+`dependencies` | `Array` | requirejs | depend modules
+`test_dependencies` | `Array` | mocha, chai, sinon | depended modules on test
+`reporter` | `String` | `spec` | mocha reporter
 
 ## Contributing
 
