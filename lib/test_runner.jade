@@ -1,0 +1,36 @@
+//- phantomochajs
+//- GitHub: https://github.com/sh19910711/
+doctype html
+html
+  head
+    meta(charset='utf-8')
+    title Mocha Tests
+    link(href='//cdnjs.cloudflare.com/ajax/libs/mocha/1.21.4/mocha.css', rel='stylesheet')
+  body
+    div(id='mocha')
+
+    //- load test dependencies (mocha, chai, etc...)
+    - for ( var key in test_dependencies )
+      script(src="#{test_dependencies[key]}")
+    
+    //- mocha setup
+    script
+      | mocha.setup('bdd')
+
+    //- load depended modules (e.g. tested modules)
+    - for ( var key in dependencies )
+      script(src="#{dependencies[key]}")
+
+    //- load test scripts
+    - for ( var key in scripts )
+      != js(scripts[key])
+
+
+    //- run mocha
+    script
+      | if (window.mochaPhantomJS) {
+      |   mochaPhantomJS.run();
+      | } else {
+      |   mocha.run();
+      | }
+
