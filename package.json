@@ -1,6 +1,6 @@
 {
   "name": "phantomochajs",
-  "version": "1.0.1",
+  "version": "1.0.",
   "description": "Run mocha tests in a PhantomJS (with auto generate test_runner.html)",
   "main": "lib/index.coffee",
   "scripts": {
@@ -18,5 +18,10 @@
   },
   "devDependencies": {
     "gulp": "^3.8.8"
+  },
+  "homepage": "https://github.com/sh19910711/phantomochajs",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/sh19910711/phantomochajs.git"
   }
 }
