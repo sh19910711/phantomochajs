@@ -2,7 +2,7 @@
   "name": "phantomochajs",
   "version": "1.0.0",
   "description": "Run mocha tests in a PhantomJS (with auto generate test_runner.html)",
-  "main": "index.js",
+  "main": "lib/index.coffee",
   "scripts": {
     "test": "gulp"
   },
