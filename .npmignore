@@ -1,0 +1,5 @@
+spec/
+gulpfile.coffee
+.git
+.gitignore
+.travis.yml
