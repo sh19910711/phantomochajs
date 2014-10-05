@@ -1,6 +1,6 @@
 {
   "name": "phantomochajs",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Run mocha tests in a PhantomJS (with auto generate test_runner.html)",
   "main": "lib/index.coffee",
   "scripts": {
