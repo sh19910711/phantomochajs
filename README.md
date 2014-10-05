@@ -12,13 +12,18 @@ $ npm install --save-dev phantomochajs
 
 ## Usage (with gulp)
 
-### gulpfile.coffee
+Run tests shown in a link below:
+
+https://github.com/sh19910711/phantomochajs/tree/master/spec
+
+### Example: gulpfile.coffee
 
 ```coffeescript
 gulp = require "gulp"
 phantomochajs = require "phantomochajs"
 
 gulp.task "example/test", ->
+  # specify test scripts in src
   gulp.src ["spec/spec_helper.coffee", "spec/**/*_spec.coffee"]
     .pipe phantomochajs(
       host: "127.0.0.1"
