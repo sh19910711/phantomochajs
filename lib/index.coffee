@@ -30,6 +30,7 @@ init_options = (options)->
 
   # mocha config
   options.reporter ||= 'spec'
+  options.mocha_css_url ||= "//cdnjs.cloudflare.com/ajax/libs/mocha/1.21.4/mocha.css"
 
   # to debug
   options.debug ||= true
@@ -74,6 +75,7 @@ phantomochajs = (options)->
           scripts: Object.keys(scripts)
           dependencies: options.dependencies
           test_dependencies: options.test_dependencies
+          mocha_css_url: options.mocha_css_url
           js: (path)-> "<script src=\"#{path}.js\"></script>"
         )
       )
