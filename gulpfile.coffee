@@ -11,3 +11,15 @@ gulp.task "example", ->
 
 gulp.task "default", ["example"]
 
+# * * *
+
+gulp.task "test/check/watch", ->
+  gulp.watch(
+    [
+      "spec/**/*.coffee"
+    ]
+    [
+      "example"
+    ]
+  )
+
