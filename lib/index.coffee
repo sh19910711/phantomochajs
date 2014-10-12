@@ -7,7 +7,7 @@ jade    = require "jade"
 fs      = require "fs"
 spawn   = require("child_process").spawn
 
-scripts = []
+scripts = {}
 
 # Set default options unless defined
 init_options = (options)->
@@ -30,6 +30,9 @@ init_options = (options)->
 
   # mocha config
   options.reporter ||= 'spec'
+
+  # to debug
+  options.debug ||= true
 
   return options
 
@@ -68,7 +71,7 @@ phantomochajs = (options)->
         jade.compile(
           fs.readFileSync(path.join(__dirname, "test_runner.jade"))
         )(
-          scripts: scripts
+          scripts: Object.keys(scripts)
           dependencies: options.dependencies
           test_dependencies: options.test_dependencies
           js: (path)-> "<script src=\"#{path}.js\"></script>"
@@ -92,7 +95,8 @@ phantomochajs = (options)->
   stream = through.obj (file, enc, cb)->
     # add given test script
     relative_path = path.relative process.cwd(), file.path
-    scripts.push relative_path.slice(0, -1 * path.extname(file.path).length)
+    script_path = relative_path.slice(0, -1 * path.extname(file.path).length)
+    scripts[script_path] = true
     cb()
 
   stream.on "end", ->
