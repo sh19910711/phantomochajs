@@ -18,6 +18,7 @@ describe "create_web_server", ->
         }
         # options
         {
+          debug: true
           host: "127.0.0.1"
           port: 19292
           amd_glob: true
@@ -38,8 +39,8 @@ describe "create_web_server", ->
         it "Status: 200", (done)->
           @res.expect 200, done
 
-        it "contains modules/a.js", (done)->
-          @res.expect /modules\/a\.js/, done
+        it "contains modules/a", (done)->
+          @res.expect /modules\/a/, done
 
         it "does not contain modules2", (done)->
           @res

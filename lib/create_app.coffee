@@ -17,6 +17,12 @@ check_glob = (glob_url, url)->
   regexp = new RegExp(glob_url)
   return regexp.test(url)
 
+to_class_name = (script_path)->
+  name = path.basename(script_path)
+  name = name.replace(/\..*$/, '')
+  name = name.charAt(0).toUpperCase() + name.slice(1)
+  return name
+
 # create app
 create_app = (scripts, options)->
 
@@ -41,19 +47,47 @@ create_app = (scripts, options)->
       next()
 
   if options.amd_glob
+    if options.debug
+      app.use (req, res, next)->
+        if req.url == "/debug"
+          res.setHeader 'Content-Type', 'text/html'
+          res.end [
+            '<script src="//cdnjs.cloudflare.com/ajax/libs/require.js/2.1.15/require.min.js"></script>'
+            '<script src="/modules/*.js"></script>'
+          ].join("")
+        else
+          next()
+
     app.use (req, res, next)->
       if has_glob(req.url)
         paths = Object.keys(scripts)
           .filter (script_path)->
             check_glob(req.url, script_path)
-        res.end(
-          [
-            "describe(["
-            paths.join(", ")
-            "], function() {"
-            "});"
-          ].join("\n")
-        )
+          .map (script_path)->
+            '"' + script_path.replace(/\..*$/, '') + '"'
+
+        class_names = Object.keys(scripts)
+          .filter (script_path)->
+            check_glob(req.url, script_path)
+          .map (script_path)->
+            to_class_name(script_path)
+
+        pairs = class_names.map (name)->
+          "#{name}: #{name}"
+
+        res_html = [
+          "(function() {define(["
+          paths.join(", ")
+          "], function("
+          class_names.join(", ")
+          ") {"
+          "return {"
+          pairs.join(", ")
+          "};"
+          "});})();"
+        ].join("")
+        res.setHeader('Content-Type', 'application/javascript');
+        res.end res_html
       else
         next()
 
