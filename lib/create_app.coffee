@@ -1,6 +1,7 @@
 connect         = require "connect"
 connect_mincer  = require "connect-mincer"
 path  = require "path"
+glob  = require "glob"
 fs    = require "fs"
 jade  = require "jade"
 
@@ -60,15 +61,19 @@ create_app = (scripts, options)->
 
     app.use (req, res, next)->
       if has_glob(req.url)
-        paths = Object.keys(scripts)
+        glob_path = req.url.slice(1).replace(/\..*/, '')
+        glob_path = path.relative(process.cwd(), glob_path)
+        module_paths = glob.sync(glob_path)
+
+        paths = module_paths
           .filter (script_path)->
-            check_glob(req.url, script_path)
+            check_glob(glob_path, script_path)
           .map (script_path)->
             '"' + script_path.replace(/\..*$/, '') + '"'
 
-        class_names = Object.keys(scripts)
+        class_names = module_paths
           .filter (script_path)->
-            check_glob(req.url, script_path)
+            check_glob(glob_path, script_path)
           .map (script_path)->
             to_class_name(script_path)
 

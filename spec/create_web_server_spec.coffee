@@ -32,20 +32,20 @@ describe "create_web_server", ->
     
       beforeEach ->
         @res = request(@server)
-          .get "/modules/*.js"
+          .get "/spec/*.js"
 
       context "response headers", ->
 
         it "Status: 200", (done)->
           @res.expect 200, done
 
-        it "contains modules/a", (done)->
-          @res.expect /modules\/a/, done
+        it "contains create_web_server_spec", (done)->
+          @res.expect /create_web_server_spec/, done
 
-        it "does not contain modules2", (done)->
+        it "does not contain modules", (done)->
           @res
             .expect (res)->
-              return true if /modules2/.test(res.text)
+              return true if /modules/.test(res.text)
               return false
             .end done
 
