@@ -26,7 +26,7 @@ describe "create_web_server", ->
       )
 
     after ->
-      # @server.close()
+      @server.close()
 
     context "GET /spec/*.js", ->
     
