@@ -72,13 +72,24 @@ create_app = (scripts, options)->
         glob_path = path.relative(process.cwd(), glob_path)
         module_paths = glob.sync(glob_path)
 
+        parent_path = glob_path.replace(/\/\*$/, '')
+        unless fs.existsSync(parent_path) && fs.lstatSync(parent_path).isDirectory()
+          res.statusCode = 404
+          res.end "404"
+          return
+
         parent_name = convert_snake_to_camel(path.basename(glob_path.replace(/\/\*$/, '')))
 
         paths = module_paths
           .filter (script_path)->
             check_glob(glob_path, script_path)
           .map (script_path)->
-            '"/' + script_path.replace(/\..*$/, '') + '"'
+            if fs.lstatSync(script_path).isDirectory()
+              '"/' + script_path.replace(/\..*$/, '') + '/*"'
+            else if fs.lstatSync(script_path).isFile()
+              '"/' + script_path.replace(/\..*$/, '') + '"'
+            else
+              throw new Error
 
         class_names = module_paths
           .filter (script_path)->
@@ -95,13 +106,15 @@ create_app = (scripts, options)->
           "], function("
           class_names.join(", ")
           ") {"
-          "function #{parent_name}() {}"
+          "function #{parent_name}() {};"
           pairs.join("")
           "return #{parent_name};"
           "});})();"
         ].join("")
-        res.setHeader('Content-Type', 'application/javascript');
+
+        res.setHeader "Content-Type", "application/javascript"
         res.end res_html
+
       else
         next()
 

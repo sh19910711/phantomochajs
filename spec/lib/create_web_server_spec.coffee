@@ -1,4 +1,4 @@
-create_web_server = require "../lib/create_web_server"
+create_web_server = require "../../lib/create_web_server"
 request = require "supertest"
 
 describe "create_web_server", ->
@@ -28,11 +28,39 @@ describe "create_web_server", ->
     after ->
       @server.close()
 
-    context "GET /spec/*.js", ->
+    context "GET /not_exist/*.js", ->
+      
+      beforeEach ->
+        @res = request(@server)
+          .get "/not_exist/*.js"
+
+      context "response headers", ->
+        
+        it "Status: 404", (done)->
+          @res.expect 404, done
+
+    context "GET /spec/lib/*.js", ->
     
       beforeEach ->
         @res = request(@server)
           .get "/spec/*.js"
+
+      context "response headers", ->
+        
+        it "Status: 200", (done)->
+          @res.expect 200, done
+
+        it "contains lib/*", (done)->
+          @res.expect /lib\/\*/, done
+
+        it "contains Lib", (done)->
+          @res.expect /Lib/, done
+
+    context "GET /spec/lib/*.js", ->
+    
+      beforeEach ->
+        @res = request(@server)
+          .get "/spec/lib/*.js"
 
       context "response headers", ->
 
