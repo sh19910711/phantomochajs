@@ -8,7 +8,14 @@ describe "create_web_server", ->
     before ->
       @server = create_web_server(
         # scripts
-        {}
+        {
+          "/modules/a.js"
+          "/modules/b.js"
+          "/modules/c.js"
+          "/modules2/1.js"
+          "/modules2/2.js"
+          "/modules2/3.js"
+        }
         # options
         {
           host: "127.0.0.1"
@@ -19,6 +26,27 @@ describe "create_web_server", ->
 
     after ->
       @server.close()
+
+    context "GET /modules/*", ->
+    
+      beforeEach ->
+        @res = request(@server)
+          .get "/modules/*.js"
+
+      context "response headers", ->
+
+        it "Status: 200", (done)->
+          @res.expect 200, done
+
+        it "contains modules/a.js", (done)->
+          @res.expect /modules\/a\.js/, done
+
+        it "does not contain modules2", (done)->
+          @res
+            .expect (res)->
+              return true if /modules2/.test(res.text)
+              return false
+            .end done
 
   context "create server", ->
 

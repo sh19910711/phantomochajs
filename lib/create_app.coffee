@@ -9,6 +9,14 @@ is_test_runner = (url)->
   return true if /^\/test_runner.html\?/.test(url)
   return false
 
+has_glob = (url)->
+  return /\*/.test(url)
+
+check_glob = (glob_url, url)->
+  glob_url = glob_url.replace /\*/, '.*'
+  regexp = new RegExp(glob_url)
+  return regexp.test(url)
+
 # create app
 create_app = (scripts, options)->
 
@@ -34,8 +42,20 @@ create_app = (scripts, options)->
 
   if options.amd_glob
     app.use (req, res, next)->
-      console.log req.url
-      next()
+      if has_glob(req.url)
+        paths = Object.keys(scripts)
+          .filter (script_path)->
+            check_glob(req.url, script_path)
+        res.end(
+          [
+            "describe(["
+            paths.join(", ")
+            "], function() {"
+            "});"
+          ].join("\n")
+        )
+      else
+        next()
 
   mincer_engine = new connect_mincer(
     root: process.cwd()
