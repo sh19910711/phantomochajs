@@ -10,7 +10,11 @@ describe "create_web_server", ->
         # scripts
         {}
         # options
-        {}
+        {
+          test_dependencies: [
+            "url/to/mocha.js"
+          ]
+        }
       )
 
     after ->
@@ -20,27 +24,28 @@ describe "create_web_server", ->
 
       context "response headers", ->
 
-        it "Content-Type: text/html", ->
+        it "Status: 200", (done)->
           request(@server)
             .get "/test_runner.html"
-            .expect 'Content-Type', "text/html"
+            .expect 200, done
 
-        it "Status: 200", ->
+        it "Contain mocha.js", (done)->
           request(@server)
             .get "/test_runner.html"
-            .expect 200
+            .expect /mocha\.js/, done
+          
 
     context "GET /test_runner.html?grep=foo", ->
 
       context "response headers", ->
 
-        it "Content-Type: text/html", ->
+        it "Status: 200", (done)->
           request(@server)
             .get "/test_runner.html"
-            .expect 'Content-Type', "text/html"
+            .expect 200, done
 
-        it "Status: 200", ->
+        it "Contain mocha.js", (done)->
           request(@server)
             .get "/test_runner.html"
-            .expect 200
+            .expect /mocha\.js/, done
 
