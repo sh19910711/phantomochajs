@@ -12,9 +12,10 @@ $ npm install --save-dev phantomochajs
 
 ## Usage (with gulp)
 
-Run tests shown in a link below:
+If you want to see examples, here is the link below:
 
-https://github.com/sh19910711/phantomochajs/tree/master/spec
+* phantomochajs (mocha + phantomjs) + requirejs + backbone
+  * https://github.com/sh19910711/phantomochajs-example
 
 ### Example: gulpfile.coffee
 
