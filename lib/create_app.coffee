@@ -87,7 +87,7 @@ create_app = (scripts, options)->
             to_class_name(script_path)
 
         pairs = class_names.map (name)->
-          "#{parent_name}[#{name}] = #{name};"
+          "#{parent_name}.prototype.#{name} = #{name};"
 
         res_html = [
           "(function() {define(["
