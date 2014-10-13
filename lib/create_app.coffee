@@ -78,7 +78,7 @@ create_app = (scripts, options)->
           .filter (script_path)->
             check_glob(glob_path, script_path)
           .map (script_path)->
-            '"' + script_path.replace(/\..*$/, '') + '"'
+            '"/' + script_path.replace(/\..*$/, '') + '"'
 
         class_names = module_paths
           .filter (script_path)->
