@@ -4,6 +4,11 @@ path  = require "path"
 fs    = require "fs"
 jade  = require "jade"
 
+is_test_runner = (url)->
+  return true if /^\/test_runner.html$/.test(url)
+  return true if /^\/test_runner.html\?/.test(url)
+  return false
+
 # create app
 create_app = (scripts, options)->
 
@@ -11,7 +16,7 @@ create_app = (scripts, options)->
 
   # GET /test_runner.html
   app.use (req, res, next)->
-    if /^\/test_runner.html\??/.test(req.url)
+    if is_test_runner(req.url)
       # render test runner for mocha
       res.end(
         jade.compile(
@@ -29,6 +34,7 @@ create_app = (scripts, options)->
 
   if options.amd_glob
     app.use (req, res, next)->
+      console.log req.url
       next()
 
   mincer_engine = new connect_mincer(

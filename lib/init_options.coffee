@@ -17,6 +17,8 @@ init_options = (options)->
     '//cdnjs.cloudflare.com/ajax/libs/require.js/2.1.14/require.min.js'
   ]
 
+  options.amd_glob ||= false
+
   # mocha config
   options.reporter ||= 'spec'
   options.mocha_css_url ||= "//cdnjs.cloudflare.com/ajax/libs/mocha/1.21.4/mocha.css"
