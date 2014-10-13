@@ -42,6 +42,9 @@ describe "create_web_server", ->
         it "contains create_web_server_spec", (done)->
           @res.expect /create_web_server_spec/, done
 
+        it "contains CreateWebServerSpec", (done)->
+          @res.expect /CreateWebServerSpec/, done
+
         it "does not contain modules", (done)->
           @res
             .expect (res)->

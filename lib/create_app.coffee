@@ -21,7 +21,9 @@ check_glob = (glob_url, url)->
 to_class_name = (script_path)->
   name = path.basename(script_path)
   name = name.replace(/\..*$/, '')
+  # snake to camel
   name = name.charAt(0).toUpperCase() + name.slice(1)
+  name = name.replace /(_[a-z])/g, (t)-> t.replace(/^_/, '').toUpperCase()
   return name
 
 # create app
