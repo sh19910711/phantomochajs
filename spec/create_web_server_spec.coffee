@@ -26,9 +26,9 @@ describe "create_web_server", ->
       )
 
     after ->
-      @server.close()
+      # @server.close()
 
-    context "GET /modules/*", ->
+    context "GET /spec/*.js", ->
     
       beforeEach ->
         @res = request(@server)
@@ -44,6 +44,9 @@ describe "create_web_server", ->
 
         it "contains CreateWebServerSpec", (done)->
           @res.expect /CreateWebServerSpec/, done
+
+        it "contains Spec", (done)->
+          @res.expect /Spec/, done
 
         it "does not contain modules", (done)->
           @res

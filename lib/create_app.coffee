@@ -18,12 +18,17 @@ check_glob = (glob_url, url)->
   regexp = new RegExp(glob_url)
   return regexp.test(url)
 
+convert_snake_to_camel = (name)->
+  name = name.charAt(0).toUpperCase() + name.slice(1)
+  name = name.replace /(_[a-z])/g, (t)-> t.replace(/^_/, '').toUpperCase()
+  return name
+ 
+
 to_class_name = (script_path)->
   name = path.basename(script_path)
   name = name.replace(/\..*$/, '')
   # snake to camel
-  name = name.charAt(0).toUpperCase() + name.slice(1)
-  name = name.replace /(_[a-z])/g, (t)-> t.replace(/^_/, '').toUpperCase()
+  name = convert_snake_to_camel(name)
   return name
 
 # create app
@@ -56,7 +61,7 @@ create_app = (scripts, options)->
           res.setHeader 'Content-Type', 'text/html'
           res.end [
             '<script src="//cdnjs.cloudflare.com/ajax/libs/require.js/2.1.15/require.min.js"></script>'
-            '<script src="/modules/*.js"></script>'
+            '<script src="/spec/*.js"></script>'
           ].join("")
         else
           next()
@@ -66,6 +71,8 @@ create_app = (scripts, options)->
         glob_path = req.url.slice(1).replace(/\..*/, '')
         glob_path = path.relative(process.cwd(), glob_path)
         module_paths = glob.sync(glob_path)
+
+        parent_name = convert_snake_to_camel(path.basename(glob_path.replace(/\/\*$/, '')))
 
         paths = module_paths
           .filter (script_path)->
@@ -80,7 +87,7 @@ create_app = (scripts, options)->
             to_class_name(script_path)
 
         pairs = class_names.map (name)->
-          "#{name}: #{name}"
+          "#{parent_name}[#{name}] = #{name};"
 
         res_html = [
           "(function() {define(["
@@ -88,9 +95,9 @@ create_app = (scripts, options)->
           "], function("
           class_names.join(", ")
           ") {"
-          "return {"
-          pairs.join(", ")
-          "};"
+          "function #{parent_name}() {}"
+          pairs.join("")
+          "return #{parent_name};"
           "});})();"
         ].join("")
         res.setHeader('Content-Type', 'application/javascript');
