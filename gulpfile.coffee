@@ -1,26 +1,20 @@
 gulp = require "gulp"
-phantomochajs = require "./lib"
+mocha = require "gulp-mocha"
 
-gulp.task "example", ->
-  test_scripts = [
-    "spec/spec_helper.coffee"
-    "spec/**/*_spec.coffee"
-    "spec/**/*_spec.js"
-  ]
-  gulp.src test_scripts
-    .pipe phantomochajs()
+gulp.task "test", ->
+  gulp.src ["spec/**/*_spec.coffee"]
+    .pipe mocha()
 
-gulp.task "default", ["example"]
-
-# * * *
-
-gulp.task "test/check/watch", ->
+gulp.task "watch", ->
   gulp.watch(
     [
       "spec/**/*.coffee"
+      "lib/**"
     ]
     [
-      "example"
+      "test"
     ]
   )
+
+gulp.task "default", ["test"]
 

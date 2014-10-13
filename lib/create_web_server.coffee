@@ -12,7 +12,7 @@ create_web_server = (scripts, options)->
 
   # GET /test_runner.html
   app.use (req, res, next)->
-    if req.url == "/test_runner.html"
+    if /^\/test_runner.html\??/.test(req.url)
       # render test runner for mocha
       res.end(
         jade.compile(
