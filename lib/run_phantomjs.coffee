@@ -19,6 +19,8 @@ run_phantomjs = (options)->
   ]
 
   phantomjs = spawn(phantomjs_path, args)
+  phantomjs.on "exit", (code)->
+    process.exit(1) if code
   phantomjs.stdout.pipe process.stdout
   phantomjs.stderr.pipe process.stderr
 
