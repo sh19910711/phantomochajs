@@ -1,6 +1,8 @@
 gulp = require "gulp"
 mocha = require "gulp-mocha"
 
+require "./example_tasks/exit_status.coffee"
+
 gulp.task "test", ->
   gulp.src ["spec/**/*_spec.coffee"]
     .pipe mocha()
